@@ -4,12 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List</title>
-    <link rel="stylesheet" href="style.css">
+   <style>
+
+    *{
+        margin: 0;
+        padding: 0;
+        padding: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    body{
+        width: 100%;
+        min-height: 100vh;
+        background: linear-gradient(to top , #cfd9df, #e2ebf0);
+        padding: 10px;
+    
+    }
+    
+    .todo-app {
+        width: 100%;
+        max-width: 540px;
+        background: #fff;
+        margin: 150px auto 20px;
+        padding: 40px 30px 70px;
+        border-radius: 50px;
+        box-shadow: 0  0 30px #afafaf;
+    }
+    
+    h2{
+        color: #002765;
+        display: flex;
+        align-items: center;
+        font-size: 30px;
+        margin-bottom: 50px;
+        position: relative;
+    }
+    
+    h2 img {
+        width: 40px;
+        position: absolute;
+        right: 0;
+    }
+    
+    .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        outline: 3px groove #000;
+        outline-offset: 5px;
+        border: none;
+        border-radius: 30px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px #5d5d5d;
+    
+    }
+    
+    input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 10px;
+    }
+    
+    input::placeholder{
+        color: #1e008d ;
+    
+    }
+    
+    button {
+        border: none;
+        outline: none;
+        padding: 16px 30px;
+        background: #26062f;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600 ;
+        cursor: pointer;
+        border-radius: 30px;
+        margin:1px;
+    }
+    
+    ul li{
+        list-style: none;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        padding: 12px 8px 12px 50px;
+        user-select: none;
+        cursor: pointer;
+        position: relative;
+        margin-block: 10px;
+    
+    }
+    
+    ul li::before{
+        content: '';
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        border-radius:50% ;
+        background: url(https://i.ibb.co/bdkHBGC/unchecked.png);
+        background-size: cover;
+        position: center;
+        top: 7px;
+        left: 8px;
+    }
+    
+    ul li.checked {
+        background: #3700a4;
+        color: #fff;
+        border-radius: 50px;
+    }
+    
+    ul li.checked::before{
+        background-image: url(https://i.ibb.co/0r6nbYJ/checked.png);
+        background-size: cover;
+    }
+    
+    ul li span{
+        position: absolute;
+        top: 8px ;
+        right: 0 ;
+        margin-right: 5px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 22px;
+        color: #000;
+        text-align: center;
+        border-radius: 50%;
+    }
+    
+    ul li span:hover {
+        background: #000;
+        color: #fff;
+    }
+    
+    ul li.checked span {
+        color: #fff;
+    }
+    
+    ul li.checked span:hover{
+        background: #fff;
+        color: #000;
+    }
+
+</style>
 </head>
 <body>
 
     <div class="todo-app">
-        <h2>To-Do List <img src="images/icon.png" alt=""></h2>
+        <h2>To-Do List <img src="https://i.ibb.co/w6KkYc7/icon.png" alt=""></h2>
 
         <div class="row">
             <input type="text" id="input-box" placeholder="Add your Text" >
@@ -23,6 +172,48 @@
     </div>
 
 
-    <script src="todo.js"></script>
+   <script>
+    let listContainer = document.getElementById('list-container')
+
+let inputBox = document.getElementById('input-box')
+
+function addTask(){
+    if(inputBox.value == ''){
+        alert('Add Your Task First')
+    }
+    else{
+        let task = document.createElement('li')
+        task.textContent = inputBox.value
+        listContainer.appendChild(task)
+
+        let span = document.createElement('span');
+        span.textContent = '\u00d7';
+        task.appendChild(span)
+    }
+    inputBox.value = ''
+    saveData()
+}
+
+listContainer.addEventListener('click', (el)=>{
+    if(el.target.tagName == 'LI'){
+        el.target.classList.toggle('checked')
+        saveData()
+    }
+    else if(el.target.tagName == 'SPAN'){
+        el.target.parentElement.remove()
+        saveData()
+    }
+})
+
+function saveData(){
+    localStorage.setItem("tasks", listContainer.innerHTML)
+}
+
+function showData(){
+   listContainer.innerHTML =  localStorage.getItem('tasks')
+}
+
+showData()
+   </script>
 </body>
 </html>
